@@ -1,0 +1,2 @@
+class NoAvailableRiders(Exception):
+    pass

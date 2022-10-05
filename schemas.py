@@ -1,3 +1,4 @@
+from datetime import datetime
 from enum import Enum
 from typing import Optional
 
@@ -15,6 +16,10 @@ class Rider(BaseModel):
     rider_id: str
     name: str
     current_location: Optional[str] = "C4"
+    in_service: Optional[str]
+
+    class Config:
+        orm_mode = True
 
 
 class Customer(BaseModel):
@@ -48,11 +53,14 @@ class Order(BaseModel):
 
 
 class DeliveredOrder(BaseModel):
-    order_id: str
-    pick_up_time: str
-    delivery_time: str
-    distance = float
+    order_id: Optional[str]
+    pick_up_time: Optional[datetime]
+    delivery_time: Optional[datetime]
+    distance : int
     rider_name: str
     restaurant_id: int
     customer_id: int
     directions: str
+
+    class Config:
+        orm_mode = True

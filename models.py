@@ -1,7 +1,6 @@
 import uuid
 
-from sqlalchemy import Column, DateTime, Float, String, Integer, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, DateTime, Float, String, Integer, ForeignKey, Boolean
 
 from database import BaseORM
 
@@ -9,21 +8,24 @@ from database import BaseORM
 class RidersORM(BaseORM):
     __tablename__ = 'riders'
 
-    rider_id = Column(UUID(as_uuid=True), primary_key=True)
+    rider_id = Column(String, primary_key=True)
     name = Column(String)
+    current_location = Column(String)
+    working = Column(Boolean, default=True)
+    in_service = Column(String, ForeignKey("orders.order_id"), nullable=True)
 
 
 class OrdersORM(BaseORM):
     __tablename__ = "orders"
 
-    order_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    order_id = Column(String, primary_key=True, default=str(uuid.uuid4))
     pick_up_time = Column(DateTime(timezone=True))
     delivery_time = Column(DateTime(timezone=True))
-    distance = Column(Float)
+    distance = Column(Integer)
     rider_name = Column(String)
     restaurant_id = Column(Integer, ForeignKey("restaurants.restaurant_id"))
     customer_id = Column(Integer, ForeignKey("customers.customer_id"))
-    directions = Column(Integer)
+    directions = Column(String)
 
 
 class RestaurantsORM(BaseORM):
